@@ -76,7 +76,7 @@ public class RecordingListAdapter extends ArrayAdapter<Recording> {
         public ImageView icon;
         public TextView title;
         public ImageView state;
-        public TextView is_series_recording;
+        public TextView recording_type;
         public TextView channel;
         public TextView time;
         public TextView date;
@@ -97,7 +97,7 @@ public class RecordingListAdapter extends ArrayAdapter<Recording> {
             holder.icon = (ImageView) view.findViewById(R.id.icon);
             holder.title = (TextView) view.findViewById(R.id.title);
             holder.state = (ImageView) view.findViewById(R.id.state);
-            holder.is_series_recording = (TextView) view.findViewById(R.id.series_recording);
+            holder.recording_type = (TextView) view.findViewById(R.id.recording_type);
             holder.channel = (TextView) view.findViewById(R.id.channel);
             holder.time = (TextView) view.findViewById(R.id.time);
             holder.date = (TextView) view.findViewById(R.id.date);
@@ -150,12 +150,14 @@ public class RecordingListAdapter extends ArrayAdapter<Recording> {
                 }
             }
 
-            // Show the information if the recording belongs to a series recording
-            if (holder.is_series_recording != null) {
-                if (rec.autorecId != null && rec.autorecId.length() > 0) {
-                    holder.is_series_recording.setVisibility(ImageView.VISIBLE);
-                } else {
-                    holder.is_series_recording.setVisibility(ImageView.GONE);
+            // Show the information what type the recording is
+            if (holder.recording_type != null) {
+                if (rec.autorecId.length() == 0 && rec.timerecId.length() == 0) {
+                    holder.recording_type.setVisibility(ImageView.GONE);
+                } else if (rec.autorecId.length() > 0 && rec.timerecId.length() == 0) {
+                    holder.recording_type.setText(R.string.is_series_recording);
+                } else if (rec.autorecId.length() == 0 && rec.timerecId.length() > 0) {
+                    holder.recording_type.setText(R.string.is_timer_recording);
                 }
             }
         }
