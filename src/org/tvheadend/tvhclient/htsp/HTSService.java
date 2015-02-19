@@ -373,30 +373,30 @@ public class HTSService extends Service implements HTSConnectionListener {
     private void onDvrEntryAdd(HTSMessage msg) {
         TVHClientApplication app = (TVHClientApplication) getApplication();
         Recording rec = new Recording();
+
         rec.id = msg.getLong("id");
-        rec.description = msg.getString("description", "");
-        rec.summary = msg.getString("summary", "");
-        rec.error = msg.getString("error", null);
+        rec.eventId = msg.getLong("eventId", 0);
+        rec.autorecId = msg.getString("autorecId", "");
+        rec.timerecId = msg.getString("timerecId", "");
         rec.start = msg.getDate("start");
-        rec.state = msg.getString("state", null);
         rec.stop = msg.getDate("stop");
+        rec.startExtra = msg.getLong("startExtra");
+        rec.stopExtra = msg.getLong("stopExtra");
+        rec.retention = msg.getLong("retention");
+        rec.priority = msg.getLong("priority");
+        rec.contentType = msg.getLong("contentType");
         rec.title = msg.getString("title", null);
+        rec.description = msg.getString("description", "");
+        rec.owner = msg.getString("owner", "");
+        rec.creator = msg.getString("creator", "");
+        rec.path = msg.getString("path", "");
+        rec.state = msg.getString("state", null);
+        rec.error = msg.getString("error", null);
         rec.channel = app.getChannel(msg.getLong("channel", 0));
         if (rec.channel != null) {
             rec.channel.recordings.add(rec);
         }
 
-        // Not all fields can be set with default values, so check if the server
-        // provides a supported htsp API version
-        if (connection.getProtocolVersion() > 12) {
-            rec.eventId = msg.getLong("eventId", 0);
-            rec.autorecId = msg.getString("autorecId");
-            rec.startExtra = msg.getDate("startExtra");
-            rec.stopExtra = msg.getDate("stopExtra");
-            rec.retention = msg.getLong("retention");
-            rec.priority = msg.getLong("priority");
-            rec.contentType = msg.getLong("contentType");
-        }
         app.addRecording(rec);
     }
 
@@ -407,25 +407,24 @@ public class HTSService extends Service implements HTSConnectionListener {
             return;
         }
 
-        rec.description = msg.getString("description", rec.description);
-        rec.summary = msg.getString("summary", rec.summary);
-        rec.error = msg.getString("error", rec.error);
+        rec.eventId = msg.getLong("eventId", rec.eventId);
+        rec.autorecId = msg.getString("autorecId", rec.autorecId);
+        rec.timerecId = msg.getString("timerecId", rec.timerecId);
         rec.start = msg.getDate("start");
-        rec.state = msg.getString("state", rec.state);
         rec.stop = msg.getDate("stop");
+        rec.startExtra = msg.getLong("startExtra");
+        rec.stopExtra = msg.getLong("stopExtra");
+        rec.retention = msg.getLong("retention");
+        rec.priority = msg.getLong("priority");
+        rec.contentType = msg.getLong("contentType");
         rec.title = msg.getString("title", rec.title);
+        rec.description = msg.getString("description", rec.description);
+        rec.owner = msg.getString("owner", rec.owner);
+        rec.creator = msg.getString("creator", rec.creator);
+        rec.path = msg.getString("path", rec.path);
+        rec.state = msg.getString("state", rec.state);
+        rec.error = msg.getString("error", rec.error);
 
-        // Not all fields can be set with default values, so check if the server
-        // provides a supported htsp API version
-        if (connection.getProtocolVersion() > 12) {
-            rec.eventId = msg.getLong("eventId", 0);
-            rec.autorecId = msg.getString("autorecId");
-            rec.startExtra = msg.getDate("startExtra");
-            rec.stopExtra = msg.getDate("stopExtra");
-            rec.retention = msg.getLong("retention");
-            rec.priority = msg.getLong("priority");
-            rec.contentType = msg.getLong("contentType");
-        }
         app.updateRecording(rec);
     }
 

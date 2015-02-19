@@ -17,12 +17,13 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="12dp">
+            android:paddingBottom="12dp" >
 
             <TextView
                 android:id="@+id/menu_play"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
+                android:layout_marginRight="12dp"
                 android:background="?attr/menu_text_selector"
                 android:drawableLeft="?attr/ic_menu_play"
                 android:gravity="center_vertical"
@@ -30,13 +31,13 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
-                android:layout_marginRight="12dp"
                 android:text="@string/menu_play" />
 
             <TextView
                 android:id="@+id/menu_record_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
+                android:layout_marginRight="10dp"
                 android:background="?attr/menu_text_selector"
                 android:drawableLeft="?attr/ic_menu_record_cancel"
                 android:gravity="center_vertical"
@@ -44,7 +45,6 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="10dp"
                 android:paddingTop="10dp"
-                android:layout_marginRight="10dp"
                 android:text="@string/menu_record_cancel"
                 android:visibility="gone" />
 
@@ -64,29 +64,11 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/is_series_recording"
+            android:id="@+id/recording_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="12dp"
-            android:text="@string/is_series_recording"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <TextView
-            android:id="@+id/summary_label"
-            style="?attr/HeaderFont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/summary" />
-
-        <TextView
-            android:id="@+id/summary"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:paddingBottom="12dp"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:text="@string/summary"
+            android:text="@null"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
@@ -164,6 +146,110 @@
             android:text="@string/channel"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
+        <TextView
+            android:id="@+id/start_extra_label"
+            style="?attr/HeaderFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/extra_start_time" />
+
+        <TextView
+            android:id="@+id/start_extra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:text="@string/not_set"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/stop_extra_label"
+            style="?attr/HeaderFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/extra_stop_time" />
+
+        <TextView
+            android:id="@+id/stop_extra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:text="@string/not_set"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/retention_label"
+            style="?attr/HeaderFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/retention" />
+
+        <TextView
+            android:id="@+id/retention"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:text="@string/retention"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/priority_label"
+            style="?attr/HeaderFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/priority" />
+
+        <TextView
+            android:id="@+id/priority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:text="@string/priority"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/path_label"
+            style="?attr/HeaderFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/path" />
+
+        <TextView
+            android:id="@+id/path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:text="@string/not_set"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/owner_label"
+            style="?attr/HeaderFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/owner" />
+
+        <TextView
+            android:id="@+id/owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:text="@string/not_set"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/creator_label"
+            style="?attr/HeaderFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/creator" />
+
+        <TextView
+            android:id="@+id/creator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:text="@string/not_set"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 
 </ScrollView>
