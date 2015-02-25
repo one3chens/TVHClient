@@ -142,7 +142,6 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
         View v = findViewById(R.id.right_fragment);
         isDualPane = v != null && v.getVisibility() == View.VISIBLE;
 
-        DatabaseHelper.init(this.getApplicationContext());
         changeLogDialog = new ChangeLogDialog(this);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -398,9 +397,8 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
      * not reload all data.
      */
     private void reconnectAndResume() {
-        if (DatabaseHelper.getInstance() != null
-                && (DatabaseHelper.getInstance().getConnections().isEmpty() 
-                        || DatabaseHelper.getInstance().getSelectedConnection() == null)) {
+        if (DatabaseHelper.getInstance().getConnections().isEmpty()
+                || DatabaseHelper.getInstance().getSelectedConnection() == null) {
             // No connection is present or active
             final int menu = (connectionSettingsShown) ? MENU_STATUS : MENU_CONNECTIONS;
             connectionSettingsShown = true;

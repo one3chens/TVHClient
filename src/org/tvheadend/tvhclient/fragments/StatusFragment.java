@@ -231,13 +231,8 @@ public class StatusFragment extends Fragment implements HTSListener {
      * timeouts or other errors.
      */
     protected void showConnectionStatus() {
-        // Get the currently selected connection
-        boolean noConnectionsDefined = false;
-        Connection conn = null;
-        if (DatabaseHelper.getInstance() != null) {
-            noConnectionsDefined = DatabaseHelper.getInstance().getConnections().isEmpty();
-            conn = DatabaseHelper.getInstance().getSelectedConnection();
-        }
+        boolean noConnectionsDefined = DatabaseHelper.getInstance().getConnections().isEmpty();
+        Connection conn = DatabaseHelper.getInstance().getSelectedConnection();
 
         // Show the details about the current connection or an information that
         // none is selected or available

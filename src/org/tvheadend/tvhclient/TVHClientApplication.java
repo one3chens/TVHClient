@@ -52,6 +52,12 @@ public class TVHClientApplication extends Application {
     private volatile boolean loading = false;
     private int protocolVersion = 10;
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        DatabaseHelper.init(getApplicationContext());
+    }
+
     // Holds a list of channels that are not allowed to load because the EPG
     // size did not change after the last loading call.
     private List<Channel> channelBlockingList = new ArrayList<Channel>();
