@@ -308,7 +308,7 @@ public class HTSService extends Service implements HTSConnectionListener {
 
     private void onChannelUpdate(HTSMessage msg) {
         TVHClientApplication app = (TVHClientApplication) getApplication();
-        final Channel ch = app.getChannel(msg.getLong("channelId"));
+        final Channel ch = app.getChannel(msg.getLong("channelId", 0));
         if (ch == null) {
             return;
         }
@@ -367,7 +367,7 @@ public class HTSService extends Service implements HTSConnectionListener {
 
     private void onChannelDelete(HTSMessage msg) {
         TVHClientApplication app = (TVHClientApplication) getApplication();
-        app.removeChannel(msg.getLong("channelId"));
+        app.removeChannel(msg.getLong("channelId", 0));
     }
 
     private void onDvrEntryAdd(HTSMessage msg) {
@@ -879,7 +879,7 @@ public class HTSService extends Service implements HTSConnectionListener {
         connection.sendMessage(request, new HTSResponseHandler() {
             public void handleResponse(HTSMessage response) {
                 TVHClientApplication app = (TVHClientApplication) getApplication();
-                Channel ch = app.getChannel(response.getLong("channelId"));
+                Channel ch = app.getChannel(response.getLong("channelId", 0));
                 Program p = new Program();
                 p.id = response.getLong("eventId");
                 p.nextId = response.getLong("nextEventId", 0);
@@ -894,7 +894,7 @@ public class HTSService extends Service implements HTSConnectionListener {
                 p.starRating = response.getInt("starRating", -1);
                 p.channel = ch;
 
-                if (ch.epg.add(p)) {
+                if (ch != null && ch.epg.add(p)) {
                     app.addProgram(p);
                     app.updateChannel(ch);
                 }
