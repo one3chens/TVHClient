@@ -164,15 +164,22 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
      * preference has changed.
      */
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
         if (key.equals("lightThemePref") 
                 || key.equals("languagePref")) {
             if (settingsInterface != null) {
                 settingsInterface.restart();
                 settingsInterface.restartNow();
             }
-        } else if (key.equals("epgMaxDays") 
+        } else if (key.equals("epgMaxDays")
                 || key.equals("epgHoursVisible")) {
+            // Check that the entered value is not too large. If an exception is
+            // triggered limit the value to a reasonable value
+            try {
+                Integer.parseInt(prefs.getString(key, "7"));
+            } catch (NumberFormatException ex) {
+                prefs.edit().putString(key, "256").commit();
+            }
             if (settingsInterface != null) {
                 settingsInterface.restart();
             }
