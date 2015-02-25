@@ -32,6 +32,9 @@ import org.tvheadend.tvhclient.model.Program;
 import org.tvheadend.tvhclient.model.Recording;
 import org.tvheadend.tvhclient.model.SeriesRecording;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -52,6 +55,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.FrameLayout;
@@ -258,6 +262,46 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
                 }
             }
         });
+
+        // Add a listener to the server name to allow changing the current
+        // connection. A drop down menu with all connections will be displayed.
+        TextView serverName = (TextView) drawerList.findViewById(R.id.server);
+        if (serverName != null) {
+            final Context context = this;
+            serverName.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Create a list of available connections names that the alert dialog will display
+                    final List<Connection> connList = DatabaseHelper.getInstance().getConnections();
+                    if (connList != null) {
+                        String[] items = new String[connList.size()];
+                        for (int i = 0; i < connList.size(); i++) {
+                            items[i] = connList.get(i).name;
+                        }
+                        // Now show the dialog to select a new connection
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle(R.string.select_connection).setItems(items,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Connection oldConn = DatabaseHelper.getInstance().getSelectedConnection();
+                                        Connection newConn = connList.get(which);
+
+                                        // Only if a new connection has been selected
+                                        // switch the selection status and reconnect
+                                        if (oldConn.id != newConn.id) {
+                                            newConn.selected = true;
+                                            oldConn.selected = false;
+                                            DatabaseHelper.getInstance().updateConnection(oldConn);
+                                            DatabaseHelper.getInstance().updateConnection(newConn);
+                                            Utils.connect(context, true);
+                                        }
+                                    }
+                                });
+                        builder.create().show();
+                    }
+                }
+            });
+        }
 
         // If the saved instance is not null then we return from an orientation
         // change. The drawer menu could be open, so update the recording

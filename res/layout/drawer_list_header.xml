@@ -7,16 +7,18 @@
 
     <TextView
         android:id="@+id/server_label"
-        style="?attr/MenuFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/server" />
+        android:text="@string/server"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/server"
+        style="?attr/MenuFont"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/unknown"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:drawableEnd="?attr/ic_arrow_drop_down"
+        android:drawableRight="?attr/ic_arrow_drop_down"
+        android:text="@string/unknown" />
 
 </LinearLayout>
