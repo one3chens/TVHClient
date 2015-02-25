@@ -45,9 +45,21 @@ public class SeriesRecordingDetailsFragment extends DialogFragment implements HT
     private boolean showControls = false;
     private SeriesRecording srec;
 
-    private TextView descLabel;
-    private TextView desc;
-    private TextView channelLabel;
+    private TextView isEnabled;
+    private TextView minDuration;
+    private TextView maxDuration;
+    private TextView retention;
+    private TextView daysOfWeek;
+    private TextView approxTime;
+    private TextView startWindow;
+    private TextView priority;
+    private TextView startExtra;
+    private TextView stopExtra;
+    private TextView title;
+    private TextView name;
+    private TextView directory;
+    private TextView owner;
+    private TextView creator;
     private TextView channelName;
 
     private LinearLayout playerLayout;
@@ -90,10 +102,21 @@ public class SeriesRecordingDetailsFragment extends DialogFragment implements HT
 
         // Initialize all the widgets from the layout
         View v = inflater.inflate(R.layout.series_recording_details_layout, container, false);
-        descLabel = (TextView) v.findViewById(R.id.description_label);
-        desc = (TextView) v.findViewById(R.id.description);
-        channelLabel = (TextView) v.findViewById(R.id.channel_label);
         channelName = (TextView) v.findViewById(R.id.channel);
+        isEnabled = (TextView) v.findViewById(R.id.is_enabled);
+        name = (TextView) v.findViewById(R.id.name);
+        minDuration = (TextView) v.findViewById(R.id.minimum_duration);
+        maxDuration = (TextView) v.findViewById(R.id.maximum_duration);
+        retention = (TextView) v.findViewById(R.id.retention);
+        daysOfWeek = (TextView) v.findViewById(R.id.days_of_week);
+        approxTime = (TextView) v.findViewById(R.id.approx_time);
+        startWindow = (TextView) v.findViewById(R.id.start_window);
+        priority = (TextView) v.findViewById(R.id.priority);
+        startExtra = (TextView) v.findViewById(R.id.start_extra);
+        stopExtra = (TextView) v.findViewById(R.id.stop_extra);
+        directory = (TextView) v.findViewById(R.id.directory);
+        owner = (TextView) v.findViewById(R.id.owner);
+        creator = (TextView) v.findViewById(R.id.creator);
         
         // Initialize the player layout
         playerLayout = (LinearLayout) v.findViewById(R.id.player_layout);
@@ -105,7 +128,7 @@ public class SeriesRecordingDetailsFragment extends DialogFragment implements HT
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         
-        // If the recording is null exit
+        // If the series recording is null exit
         if (srec == null) {
             return;
         }
@@ -118,8 +141,62 @@ public class SeriesRecordingDetailsFragment extends DialogFragment implements HT
         }
         showPlayerControls();
 
-        Utils.setDescription(channelLabel, channelName, ((srec.channel != null) ? srec.channel.name : ""));
-        Utils.setDescription(descLabel, desc, srec.description);
+        if (channelName != null && srec.channel != null) {
+            channelName.setText(srec.channel.name);
+        }
+        if (title != null && srec.title.length() > 0) {
+            title.setText(srec.title);
+        }
+        if (name != null && srec.name.length() > 0) {
+            name.setText(srec.name);
+        }
+        if (directory != null && srec.directory.length() > 0) {
+            directory.setText(srec.directory);
+        }
+        if (owner != null && srec.owner.length() > 0) {
+            owner.setText(srec.owner);
+        }
+        if (creator != null && srec.creator.length() > 0) {
+            creator.setText(srec.creator);
+        }
+        Utils.setDaysOfWeek(activity, null, daysOfWeek, srec.daysOfWeek);
+
+        if (priority != null) {
+            String[] priorityItems = getResources().getStringArray(R.array.dvr_priorities);
+            if (srec.priority >= 0 && srec.priority < priorityItems.length) {
+                priority.setText(priorityItems[(int) (srec.priority)]);
+            }
+        }
+
+        if (minDuration != null && srec.minDuration > 0) {
+            minDuration.setText(getString(R.string.minutes, (int) srec.minDuration));
+        }
+        if (maxDuration != null && srec.maxDuration > 0) {
+            maxDuration.setText(getString(R.string.minutes, (int) srec.maxDuration));
+        }
+        if (retention != null) {
+            retention.setText(getString(R.string.days, (int) srec.retention));
+        }
+        if (approxTime != null && srec.approxTime >= 0) {
+            approxTime.setText(getString(R.string.minutes, srec.approxTime));
+        }
+        if (startWindow != null && srec.startWindow >= 0) {
+            startWindow.setText(getString(R.string.minutes, srec.startWindow));
+        }
+        if (startExtra != null && srec.startExtra >= 0) {
+            startExtra.setText(getString(R.string.minutes, (int) srec.startExtra));
+        }
+        if (stopExtra != null && srec.stopExtra >= 0) {
+            stopExtra.setText(getString(R.string.minutes, (int) srec.stopExtra));
+        }
+
+        if (isEnabled != null) {
+            if (srec.enabled) {
+                isEnabled.setText(R.string.recording_enabled);
+            } else {
+                isEnabled.setText(R.string.recording_disabled);
+            }
+        }
     }
 
     /**

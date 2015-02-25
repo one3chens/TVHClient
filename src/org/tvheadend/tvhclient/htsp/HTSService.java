@@ -617,17 +617,23 @@ public class HTSService extends Service implements HTSConnectionListener {
         if (srec == null) {
             return;
         }
-        srec.description = msg.getString("description", srec.description);
+
         srec.enabled = (msg.getLong("enabled", 0) == 0) ? false : true;
         srec.maxDuration = msg.getLong("maxDuration");
         srec.minDuration = msg.getLong("minDuration");
         srec.retention = msg.getLong("retention");
         srec.daysOfWeek = msg.getLong("daysOfWeek");
         srec.approxTime = msg.getLong("approxTime");
+        srec.start = msg.getLong("start");
+        srec.startWindow = msg.getLong("startWindow");
         srec.priority = msg.getLong("priority");
-        srec.startExtra = msg.getDate("startExtra");
-        srec.stopExtra = msg.getDate("stopExtra");
+        srec.startExtra = msg.getLong("startExtra");
+        srec.stopExtra = msg.getLong("stopExtra");
         srec.title = msg.getString("title", srec.title);
+        srec.name = msg.getString("name", srec.name);
+        srec.directory = msg.getString("directory", srec.directory);
+        srec.owner = msg.getString("owner", srec.owner);
+        srec.creator = msg.getString("creator", srec.creator);
         app.updateSeriesRecording(srec);
     }
 
@@ -635,17 +641,22 @@ public class HTSService extends Service implements HTSConnectionListener {
         TVHClientApplication app = (TVHClientApplication) getApplication();
         SeriesRecording srec = new SeriesRecording();
         srec.id = msg.getString("id");
-        srec.description = msg.getString("description", "");
         srec.enabled = (msg.getLong("enabled", 0) == 0) ? false : true;
         srec.maxDuration = msg.getLong("maxDuration");
         srec.minDuration = msg.getLong("minDuration");
         srec.retention = msg.getLong("retention");
         srec.daysOfWeek = msg.getLong("daysOfWeek");
         srec.approxTime = msg.getLong("approxTime");
+        srec.start = msg.getLong("start");
+        srec.startWindow = msg.getLong("startWindow");
         srec.priority = msg.getLong("priority");
-        srec.startExtra = msg.getDate("startExtra");
-        srec.stopExtra = msg.getDate("stopExtra");
-        srec.title = msg.getString("title");
+        srec.startExtra = msg.getLong("startExtra");
+        srec.stopExtra = msg.getLong("stopExtra");
+        srec.title = msg.getString("title", "");
+        srec.name = msg.getString("name", "");
+        srec.directory = msg.getString("directory", "");
+        srec.owner = msg.getString("owner", "");
+        srec.creator = msg.getString("creator", "");
         srec.channel = app.getChannel(msg.getLong("channel", 0));
         app.addSeriesRecording(srec);
     }
