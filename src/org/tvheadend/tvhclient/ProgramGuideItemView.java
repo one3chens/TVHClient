@@ -138,18 +138,18 @@ public class ProgramGuideItemView extends LinearLayout {
                             || (programType != PROGRAM_AFTER_TIMESLOT) 
                             || (programType != PROGRAM_UNKNOWN_TIMESLOT));
                     
-    				// Increase the counter which is required to fill in placeholder
-    				// programs in case the first program in the guide data is
-    				// already within the time slot and not one that moves into one.
+                    // Increase the counter which is required to fill in placeholder
+                    // programs in case the first program in the guide data is
+                    // already within the time slot and not one that moves into one.
                     if (programAdded) {
                     	programsAddedCounter += 1;
                     }
                     // Check if there is more guide data available
                     lastProgramFound = !it.hasNext();
                     
-    				// Stop adding more programs if the last program is within the 
-    				// time slot and no more data is available or the program added 
-    				// is the last one that fits into or overlaps the time slot.
+                    // Stop adding more programs if the last program is within the
+                    // time slot and no more data is available or the program added
+                    // is the last one that fits into or overlaps the time slot.
                     if ((programType == PROGRAM_IS_WITHIN_TIMESLOT && lastProgramFound)
                             || programType == PROGRAM_MOVES_OUT_OF_TIMESLOT
                             || programType == PROGRAM_OVERLAPS_TIMESLOT) {
@@ -239,62 +239,62 @@ public class ProgramGuideItemView extends LinearLayout {
      */
     private void addCurrentProgram(final Program program, final int programType, int programsAddedCounter) {
 
-    	// Calculate the width of the program layout in the view. 
+        // Calculate the width of the program layout in the view.
         int width = getProgramLayoutWidth(program, programType);
 
         switch (programType) {
         case PROGRAM_MOVES_INTO_TIMESLOT:
-        	addCurrentProgramToView(program, width, false);
+            addCurrentProgramToView(program, width, false);
             displayWidthRemaining -= width;
-        	break;
-        	
+            break;
+
         case PROGRAM_IS_WITHIN_TIMESLOT:
-			// If this program is the first in the guide data and is already
-			// within the time slot it would start somewhere in the middle of
-			// the view. So we need to fill in a placeholder program. 
-			if (programsAddedCounter == 0) {
-				final double durationTime = ((program.start.getTime() - startTime) / 1000 / 60);
-				final int w = (int) (durationTime * pixelsPerMinute);
-				addCurrentProgramToView(null, w, false);
-			}
-        	addCurrentProgramToView(program, width, false);
+            // If this program is the first in the guide data and is already
+            // within the time slot it would start somewhere in the middle of
+            // the view. So we need to fill in a placeholder program.
+            if (programsAddedCounter == 0) {
+                final double durationTime = ((program.start.getTime() - startTime) / 1000 / 60);
+                final int w = (int) (durationTime * pixelsPerMinute);
+                addCurrentProgramToView(null, w, false);
+            }
+            addCurrentProgramToView(program, width, false);
             displayWidthRemaining -= width;
-        	break;
-        	
+            break;
+
         case PROGRAM_MOVES_OUT_OF_TIMESLOT:
-			// If this program is the first in the guide data and is already
-			// within the time slot it would start somewhere in the middle of
-			// the view. So we need to fill in a placeholder program. 
-        	if (programsAddedCounter == 0) {
-        		final double durationTime = ((program.start.getTime() - startTime) / 1000 / 60);
-        		final int w = (int) (durationTime * pixelsPerMinute);
-        		addCurrentProgramToView(null, w, false);
-        	}
-        	// Set the width to the remaining width to indicate for the next
-			// program (by the program logic no additional program will be
-			// added) there is not space left. The boolean flag will let the
-			// layout use the full space instead of the given width.
+            // If this program is the first in the guide data and is already
+            // within the time slot it would start somewhere in the middle of
+            // the view. So we need to fill in a placeholder program.
+            if (programsAddedCounter == 0) {
+                final double durationTime = ((program.start.getTime() - startTime) / 1000 / 60);
+                final int w = (int) (durationTime * pixelsPerMinute);
+                addCurrentProgramToView(null, w, false);
+            }
+            // Set the width to the remaining width to indicate for the next
+            // program (by the program logic no additional program will be
+            // added) there is not space left. The boolean flag will let the
+            // layout use the full space instead of the given width.
             if (width >= displayWidthRemaining) {
                 width = displayWidthRemaining;
             }
             addCurrentProgramToView(program, width, true);
             displayWidthRemaining -= width;
-        	break;
-        	
+            break;
+
         case PROGRAM_OVERLAPS_TIMESLOT:
-			// Set the width to the remaining width to indicate for the next
-			// program (by the program logic no additional program will be
-			// added) there is not space left. The boolean flag will let the
-			// layout use the full space instead of the given width.
-        	if (width >= displayWidthRemaining) {
+            // Set the width to the remaining width to indicate for the next
+            // program (by the program logic no additional program will be
+            // added) there is not space left. The boolean flag will let the
+            // layout use the full space instead of the given width.
+            if (width >= displayWidthRemaining) {
                 width = displayWidthRemaining;
-        	}
+            }
             addCurrentProgramToView(program, width, true);
             displayWidthRemaining -= width;
-        	break;
+            break;
 
         default:
-        	break;
+            break;
         }
     }
 
@@ -308,7 +308,7 @@ public class ProgramGuideItemView extends LinearLayout {
      * @return
      */
     private int getProgramLayoutWidth(final Program p, final int programType) {
-    	final long programStartTime = p.start.getTime();
+        final long programStartTime = p.start.getTime();
         final long programEndTime = p.stop.getTime();
         final double durationTime = ((p.stop.getTime() - p.start.getTime()) / 1000 / 60);
         int offset = 0;
@@ -316,23 +316,23 @@ public class ProgramGuideItemView extends LinearLayout {
 
         switch (programType) {
         case PROGRAM_MOVES_INTO_TIMESLOT:
-        	offset = (int) (durationTime - ((startTime - programStartTime) / 1000 / 60));
-            width = (int) (offset * pixelsPerMinute);   
-        	break;
+            offset = (int) (durationTime - ((startTime - programStartTime) / 1000 / 60));
+            width = (int) (offset * pixelsPerMinute);
+            break;
 
         case PROGRAM_IS_WITHIN_TIMESLOT:
-        	width = (int) (durationTime * pixelsPerMinute);
-        	break;
+            width = (int) (durationTime * pixelsPerMinute);
+            break;
 
         case PROGRAM_MOVES_OUT_OF_TIMESLOT:
-        	offset = (int) (durationTime - ((programEndTime - endTime)) / 1000 / 60);
+            offset = (int) (durationTime - ((programEndTime - endTime)) / 1000 / 60);
             width = (int) (offset * pixelsPerMinute);
-        	break;
+            break;
 
         case PROGRAM_OVERLAPS_TIMESLOT:
-        	offset = (int) (durationTime - ((programEndTime - endTime)) / 1000 / 60);
+            offset = (int) (durationTime - ((programEndTime - endTime)) / 1000 / 60);
             width = (int) (offset * pixelsPerMinute);
-        	break;
+            break;
 
         default:
         	break;
@@ -350,7 +350,7 @@ public class ProgramGuideItemView extends LinearLayout {
      */
     private void addCurrentProgramToView(final Program p, final int layoutWidth, final boolean expandLayout) {
 
-    	View v = activity.getLayoutInflater().inflate(R.layout.program_guide_data_item, null);
+        View v = activity.getLayoutInflater().inflate( R.layout.program_guide_data_item, null);
         final LinearLayout itemLayout = (LinearLayout) v.findViewById(R.id.timeline_item);
         final TextView title = (TextView) v.findViewById(R.id.title);
         final ImageView state = (ImageView) v.findViewById(R.id.state);
@@ -364,9 +364,9 @@ public class ProgramGuideItemView extends LinearLayout {
 
         // Show the placeholder if there is no program
         if (p == null) {
-        	title.setText(R.string.unknown);
-        	state.setVisibility(View.GONE);
-        	duration.setVisibility(View.GONE);
+            title.setText(R.string.unknown);
+            state.setVisibility(View.GONE);
+            duration.setVisibility(View.GONE);
         }
 
         if (p != null) {
