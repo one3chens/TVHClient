@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/timeline_item"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="66dp"
     android:orientation="vertical"
     android:padding="3dp" >
 
     <ProgressBar
         android:id="@+id/loading"
         android:layout_width="24dp"
-        android:layout_height="fill_parent"
+        android:layout_height="24dp"
         android:layout_gravity="center" />
 
 </LinearLayout>

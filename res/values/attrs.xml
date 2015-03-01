@@ -30,7 +30,6 @@
     <attr name="ProgramGuideFont" format="reference" />
     <attr name="TimelineItemLayoutStyle" format="reference" />
     <attr name="TimelineHeaderLayoutStyle" format="reference" />
-    <attr name="TimelineListLayoutStyle" format="reference" />
     <attr name="MenuItemLayoutStyle" format="reference" />
     <attr name="MenuHeaderLayoutStyle" format="reference" />
     <attr name="menu_text_selector" format="reference" />
