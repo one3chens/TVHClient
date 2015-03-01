@@ -78,6 +78,7 @@ public class ProgramGuideItemView extends LinearLayout {
             startTime = bundle.getLong(Constants.BUNDLE_EPG_START_TIME, 0);
             endTime = bundle.getLong(Constants.BUNDLE_EPG_END_TIME, 0);
             pixelsPerMinute = bundle.getFloat(Constants.BUNDLE_EPG_PIXELS_PER_MINUTE, 5.0f);
+            displayWidth = bundle.getInt(Constants.BUNDLE_EPG_DISPLAY_WIDTH, 400);
         }
 
         displayWidthRemaining = displayWidth;
@@ -126,27 +127,28 @@ public class ProgramGuideItemView extends LinearLayout {
                 Program p = null;
                 while (it.hasNext()) {
                     p = it.next();
-    
+
                     // Get the type of the program and add it to the view
                     programType = getProgramType(p);
-                    addCurrentProgram(p, programType, programsAddedCounter);
-    
-                    // The program is only considered as added when it was
-                    // somehow within the timeslot. Required further down to
-                    // check if it was the last one added 
-                    programAdded = ((programType != PROGRAM_BEFORE_TIMESLOT)
-                            || (programType != PROGRAM_AFTER_TIMESLOT) 
-                            || (programType != PROGRAM_UNKNOWN_TIMESLOT));
                     
-                    // Increase the counter which is required to fill in placeholder
-                    // programs in case the first program in the guide data is
-                    // already within the time slot and not one that moves into one.
-                    if (programAdded) {
-                    	programsAddedCounter += 1;
+                    // Add the program only when it is somehow within the timeslot.
+                    if (programType == PROGRAM_MOVES_INTO_TIMESLOT ||
+                            programType == PROGRAM_IS_WITHIN_TIMESLOT ||
+                            programType == PROGRAM_MOVES_OUT_OF_TIMESLOT ||
+                            programType == PROGRAM_OVERLAPS_TIMESLOT) {
+
+                        addCurrentProgram(p, programType, programsAddedCounter);
+
+                        // Increase the counter which is required to fill in placeholder
+                        // programs in case the first program in the guide data is
+                        // already within the time slot and not one that moves into one.
+                        programsAddedCounter++;
+                        programAdded = true;
                     }
+
                     // Check if there is more guide data available
                     lastProgramFound = !it.hasNext();
-                    
+
                     // Stop adding more programs if the last program is within the
                     // time slot and no more data is available or the program added
                     // is the last one that fits into or overlaps the time slot.
@@ -441,6 +443,9 @@ public class ProgramGuideItemView extends LinearLayout {
 
     private void addEmptyProgramToView() {
         View v = inflate(getContext(), R.layout.program_guide_data_item_empty, null);
+        final LinearLayout itemLayout = (LinearLayout) v.findViewById(R.id.timeline_item);
+        LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(displayWidth, LayoutParams.MATCH_PARENT);
+        itemLayout.setLayoutParams(parms);
         layout.addView(v);
     }
 

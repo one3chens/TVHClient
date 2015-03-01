@@ -240,13 +240,9 @@ public class ProgramGuideListFragment extends Fragment implements HTSListener, F
                 // indication. If channel icons are shown then we need to add a
                 // the icon width to the offset.
                 final long startTime = bundle.getLong(Constants.BUNDLE_EPG_START_TIME, 0);
-                final int hoursToShow = bundle.getInt(Constants.BUNDLE_EPG_HOURS_TO_SHOW, 4);
                 final long currentTime = Calendar.getInstance().getTimeInMillis();
                 final long durationTime = (currentTime - startTime) / 1000 / 60;
-
-                // The pixels per minute are smaller if icons are shown. Add the
-                // icon width to start from the correct position
-                final float pixelsPerMinute = Utils.getPixelsPerMinute(activity, 0, hoursToShow);
+                final float pixelsPerMinute = bundle.getFloat(Constants.BUNDLE_EPG_PIXELS_PER_MINUTE, 0);
                 final int offset = (int) (durationTime * pixelsPerMinute);
 
                 // Get the height of the pager title layout

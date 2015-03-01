@@ -50,7 +50,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 import android.text.format.DateUtils;
-import android.util.DisplayMetrics;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,12 +64,6 @@ public class Utils {
     // Constants required for the date calculation
     private static final int twoDays = 1000 * 3600 * 24 * 2;
     private static final int sixDays = 1000 * 3600 * 24 * 6;
-    
-    // This is the width in pixels from the icon in the program_guide_list.xml
-    // We need to subtract this value from the window width to get the real
-    // usable width. The same values is also used in the
-    // ProgramGuideListFragment class.
-    private final static int LAYOUT_ICON_OFFSET = 66;
 
     // Offset that reduces the visibility of the program guide colors a little
     private final static int GENRE_COLOR_ALPHA_EPG_OFFSET = 50;
@@ -1003,25 +996,6 @@ public class Utils {
         intent.putExtra(Constants.BUNDLE_CHANNEL_ID, channel.id);
         intent.putExtra(Constants.BUNDLE_COUNT, Constants.PREF_PROGRAMS_TO_LOAD);
         context.startService(intent);
-    }
-
-    /**
-     * Calculates the available display width of one minute in pixels. This
-     * depends how wide the screen is and how many hours shall be shown in one
-     * screen.
-     * 
-     * @param context
-     * @param tabIndex
-     * @param hoursToShow
-     * @return
-     */
-    public static float getPixelsPerMinute(final Activity context, final int tabIndex, final int hoursToShow) {
-        // Get the usable width. Subtract the icon width if its visible.
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        context.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        float displayWidth = displaymetrics.widthPixels - ((tabIndex == 0) ? LAYOUT_ICON_OFFSET : 0);
-        float pixelsPerMinute = ((float) displayWidth / (60.0f * (float) hoursToShow));
-        return pixelsPerMinute;
     }
 
     public static int getChannelTagId() {
