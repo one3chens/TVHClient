@@ -171,14 +171,20 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
                 settingsInterface.restart();
                 settingsInterface.restartNow();
             }
-        } else if (key.equals("epgMaxDays")
-                || key.equals("epgHoursVisible")) {
-            // Check that the entered value is not too large. If an exception is
-            // triggered limit the value to a reasonable value
+        } else if (key.equals("epgMaxDays")) {
             try {
                 Integer.parseInt(prefs.getString(key, "7"));
             } catch (NumberFormatException ex) {
-                prefs.edit().putString(key, "256").commit();
+                prefs.edit().putString(key, "7").commit();
+            }
+            if (settingsInterface != null) {
+                settingsInterface.restart();
+            }
+        } else if (key.equals("epgHoursVisible")) {
+            try {
+                Integer.parseInt(prefs.getString(key, "4"));
+            } catch (NumberFormatException ex) {
+                prefs.edit().putString(key, "4").commit();
             }
             if (settingsInterface != null) {
                 settingsInterface.restart();
