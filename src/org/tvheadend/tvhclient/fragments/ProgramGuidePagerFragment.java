@@ -13,7 +13,6 @@ import org.tvheadend.tvhclient.model.ProgramGuideTimeDialogItem;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -211,20 +210,21 @@ public class ProgramGuidePagerFragment extends Fragment implements FragmentContr
      */
     private static class ProgramGuidePagerAdapter extends FragmentPagerAdapter {
         private int count = 0;
+        private Activity activity;
 
-        public ProgramGuidePagerAdapter(FragmentManager fm, Context context, int fragmentCount) {
+        public ProgramGuidePagerAdapter(FragmentManager fm, Activity activity, int fragmentCount) {
             super(fm);
-            count = fragmentCount;
+            this.activity = activity;
+            this.count = fragmentCount;
         }
 
         @Override
         public Fragment getItem(int position) {
             Fragment fragment = new ProgramGuideListFragment();
             Bundle bundle = new Bundle();
-            bundle.putInt(Constants.BUNDLE_EPG_INDEX, position);
-            bundle.putInt(Constants.BUNDLE_EPG_HOURS_TO_SHOW, hoursToShow);
             bundle.putLong(Constants.BUNDLE_EPG_START_TIME, startTimes.get(position));
             bundle.putLong(Constants.BUNDLE_EPG_END_TIME, endTimes.get(position));
+            bundle.putFloat(Constants.BUNDLE_EPG_PIXELS_PER_MINUTE, Utils.getPixelsPerMinute(activity, position, hoursToShow));
             fragment.setArguments(bundle);
             return fragment;
         }

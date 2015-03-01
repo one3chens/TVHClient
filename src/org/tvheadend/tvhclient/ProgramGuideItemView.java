@@ -27,9 +27,7 @@ public class ProgramGuideItemView extends LinearLayout {
 
     private LinearLayout layout;
     private Activity activity;
-    private int tabIndex;
     private Channel channel;
-    private int hoursToShow;
     private int displayWidth;
     
     // Specifies the usable width for the layout of a single program guide item
@@ -77,13 +75,11 @@ public class ProgramGuideItemView extends LinearLayout {
         fragmentInterface = (ProgramContextMenuInterface) fragment;
 
         if (bundle != null) {
-            hoursToShow = bundle.getInt(Constants.BUNDLE_EPG_HOURS_TO_SHOW, 4);
-            tabIndex = bundle.getInt(Constants.BUNDLE_EPG_INDEX, 0);
             startTime = bundle.getLong(Constants.BUNDLE_EPG_START_TIME, 0);
             endTime = bundle.getLong(Constants.BUNDLE_EPG_END_TIME, 0);
+            pixelsPerMinute = bundle.getFloat(Constants.BUNDLE_EPG_PIXELS_PER_MINUTE, 5.0f);
         }
-        
-        pixelsPerMinute = Utils.getPixelsPerMinute(activity, tabIndex, hoursToShow);
+
         displayWidthRemaining = displayWidth;
     }
 
