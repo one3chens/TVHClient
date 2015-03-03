@@ -4,12 +4,15 @@
     android:layout_width="fill_parent"
     android:layout_height="66dp"
     android:orientation="vertical"
-    android:padding="3dp" >
+    android:paddingLeft="3dp"
+    android:paddingRight="3dp" >
 
     <ProgressBar
         android:id="@+id/loading"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:layout_marginBottom="21dp"
+        android:layout_marginTop="21dp" />
 
 </LinearLayout>
