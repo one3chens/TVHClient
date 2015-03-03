@@ -66,6 +66,9 @@ public class ProgramGuideListFragment extends Fragment implements HTSListener, F
     private Bundle bundle;
     private Program selectedProgram = null;
 
+    private Runnable updateEpgTask;
+    private Handler updateEpgHandler = new Handler();
+
     // Enables scrolling when the user has touch the screen and starts
     // scrolling. When the user is done, scrolling will be disabled to prevent
     // unwanted calls to the interface. 
@@ -188,6 +191,25 @@ public class ProgramGuideListFragment extends Fragment implements HTSListener, F
             }
         };
         timer.schedule(doAsynchronousTask, 0, 60000);
+
+        // Create the runnable that will initiate the update of the adapter that
+        // will trigger the update of the program guide view
+        updateEpgTask = new Runnable() {
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        }; 
+    }
+
+    /**
+     * Starts a timer that will update the program guide view when expired. If
+     * this method is called while the timer is running, the timer will be
+     * restarted. This will prevent calls adapter.notifyDataSetChanged() until
+     * all data has been loaded and nothing has happened for 2s.
+     */
+    private void startDelayedAdapterUpdate() {
+        updateEpgHandler.removeCallbacks(updateEpgTask);
+        updateEpgHandler.postDelayed(updateEpgTask, 2000);
     }
 
     /**
@@ -204,7 +226,7 @@ public class ProgramGuideListFragment extends Fragment implements HTSListener, F
             }
         }
         adapter.sort(Utils.getChannelSortOrder(activity));
-        adapter.notifyDataSetChanged();
+        startDelayedAdapterUpdate();
 
         // Inform the listeners that the channel list is populated.
         // They could then define the preselected list item.
@@ -321,7 +343,7 @@ public class ProgramGuideListFragment extends Fragment implements HTSListener, F
                     boolean loading = (Boolean) obj;
                     if (loading) {
                         adapter.clear();
-                        adapter.notifyDataSetChanged();
+                        startDelayedAdapterUpdate();
                     } else {
                         populateList();
                     }
@@ -331,15 +353,15 @@ public class ProgramGuideListFragment extends Fragment implements HTSListener, F
             activity.runOnUiThread(new Runnable() {
                 public void run() {
                     adapter.add((Channel) obj);
-                    adapter.notifyDataSetChanged();
                     adapter.sort(Utils.getChannelSortOrder(activity));
+                    startDelayedAdapterUpdate();
                 }
             });
         } else if (action.equals(Constants.ACTION_CHANNEL_DELETE)) {
             activity.runOnUiThread(new Runnable() {
                 public void run() {
                     adapter.remove((Channel) obj);
-                    adapter.notifyDataSetChanged();
+                    startDelayedAdapterUpdate();
                 }
             });
         } else if (action.equals(Constants.ACTION_PROGRAM_UPDATE)
@@ -349,7 +371,7 @@ public class ProgramGuideListFragment extends Fragment implements HTSListener, F
             // An existing program has been updated
             activity.runOnUiThread(new Runnable() {
                 public void run() {
-                    adapter.notifyDataSetChanged();
+                    startDelayedAdapterUpdate();
                 }
             });
         }
@@ -362,7 +384,7 @@ public class ProgramGuideListFragment extends Fragment implements HTSListener, F
                     // Only update the channel if is not blocked
                     TVHClientApplication app = (TVHClientApplication) activity.getApplication();
                     if (!app.isChannelBlocked(ch)) {
-                        adapter.notifyDataSetChanged();
+                        startDelayedAdapterUpdate();
                     }
                 }
             });
