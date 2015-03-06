@@ -247,7 +247,7 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
 
         // Create the custom adapter for the menus in the navigation drawer.
         // Also set the listener to react to the user selection.
-        drawerAdapter = new DrawerMenuAdapter(this, getDrawerMenu(), R.layout.drawer_list_item);
+        drawerAdapter = new DrawerMenuAdapter(this, getDrawerMenu());
         drawerList.setAdapter(drawerAdapter);
         drawerList.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -271,7 +271,7 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
 
         // Add a listener to the server name to allow changing the current
         // connection. A drop down menu with all connections will be displayed.
-        TextView serverName = (TextView) drawerList.findViewById(R.id.server);
+        ImageView serverName = (ImageView) drawerList.findViewById(R.id.server_selection);
         if (serverName != null) {
             final Context context = this;
             serverName.setOnClickListener(new OnClickListener() {
@@ -333,20 +333,20 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
      */
     private void updateDrawerMenu() {
         // Update the server name if it has been changed
-        TextView serverName = (TextView) drawerList.findViewById(R.id.server);
+        TextView serverName = (TextView) drawerList.findViewById(R.id.server_name);
         final Connection conn = DatabaseHelper.getInstance().getSelectedConnection();
         if (conn != null && serverName != null) {
             serverName.setText(conn.name);
         }
         // Update the number of recordings in each category
         TVHClientApplication app = (TVHClientApplication) getApplication();
-        drawerAdapter.getItem(MENU_COMPLETED_RECORDINGS).count = 
+        drawerAdapter.getItemById(MENU_COMPLETED_RECORDINGS).count = 
                 app.getRecordingsByType(Constants.RECORDING_TYPE_COMPLETED).size();
-        drawerAdapter.getItem(MENU_SCHEDULED_RECORDINGS).count = 
+        drawerAdapter.getItemById(MENU_SCHEDULED_RECORDINGS).count = 
                 app.getRecordingsByType(Constants.RECORDING_TYPE_SCHEDULED).size();
-        drawerAdapter.getItem(MENU_SERIES_RECORDINGS).count = 
+        drawerAdapter.getItemById(MENU_SERIES_RECORDINGS).count = 
                 app.getSeriesRecordings().size();
-        drawerAdapter.getItem(MENU_FAILED_RECORDINGS).count = 
+        drawerAdapter.getItemById(MENU_FAILED_RECORDINGS).count = 
                 app.getRecordingsByType(Constants.RECORDING_TYPE_FAILED).size();
         drawerAdapter.notifyDataSetChanged();
     }
@@ -360,6 +360,7 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
         final boolean lightTheme = prefs.getBoolean("lightThemePref", true);
 
         List<DrawerMenuItem> list = new ArrayList<DrawerMenuItem>();
+        list.add(new DrawerMenuItem(""));
         list.add(new DrawerMenuItem(MENU_CHANNELS, menuItems[0],
                 (lightTheme) ? R.drawable.ic_menu_channels_light : R.drawable.ic_menu_channels_dark));
         list.add(new DrawerMenuItem(MENU_COMPLETED_RECORDINGS, menuItems[1],
@@ -386,6 +387,7 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
         list.add(new DrawerMenuItem(MENU_CONNECTIONS, menuItems[8],
                 (lightTheme) ? R.drawable.ic_menu_connections_light
                         : R.drawable.ic_menu_connections_dark));
+        list.add(new DrawerMenuItem(""));
         list.add(new DrawerMenuItem(MENU_SETTINGS, menuItems[9],
                 (lightTheme) ? R.drawable.ic_menu_settings_light
                         : R.drawable.ic_menu_settings_dark));
@@ -956,16 +958,16 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
      */
     private void showDrawerMenu(boolean show) {
         // Enable the main menus in the drawer
-        drawerAdapter.getItem(MENU_CHANNELS).isVisible = show;
-        drawerAdapter.getItem(MENU_COMPLETED_RECORDINGS).isVisible = show;
-        drawerAdapter.getItem(MENU_SCHEDULED_RECORDINGS).isVisible = show;
-        drawerAdapter.getItem(MENU_FAILED_RECORDINGS).isVisible = show;
-        drawerAdapter.getItem(MENU_PROGRAM_GUIDE).isVisible = show;
+        drawerAdapter.getItemById(MENU_CHANNELS).isVisible = show;
+        drawerAdapter.getItemById(MENU_COMPLETED_RECORDINGS).isVisible = show;
+        drawerAdapter.getItemById(MENU_SCHEDULED_RECORDINGS).isVisible = show;
+        drawerAdapter.getItemById(MENU_FAILED_RECORDINGS).isVisible = show;
+        drawerAdapter.getItemById(MENU_PROGRAM_GUIDE).isVisible = show;
 
         // Only show the menu for the recording types if the server supports it
         TVHClientApplication app = (TVHClientApplication) getApplication();
-        drawerAdapter.getItem(MENU_TIMER_RECORDINGS).isVisible = (show && (app.getProtocolVersion() > 17) && false);
-        drawerAdapter.getItem(MENU_SERIES_RECORDINGS).isVisible = (show && (app.getProtocolVersion() > 12));
+        drawerAdapter.getItemById(MENU_TIMER_RECORDINGS).isVisible = (show && (app.getProtocolVersion() > 17) && false);
+        drawerAdapter.getItemById(MENU_SERIES_RECORDINGS).isVisible = (show && (app.getProtocolVersion() > 12));
     }
 
     @Override
