@@ -14,8 +14,9 @@
         <item>Fehlerhafte Aufnahmen</item>
         <item>TV-Programm</item>
         <item>Status</item>
-        <item>Einstellungen</item>
         <item>Verbindungen</item>
+        <item>Einstellungen</item>
+        <item>Hilfe &amp; feedback</item>
     </string-array>
 
     <string-array name="pref_sort_channels_names">

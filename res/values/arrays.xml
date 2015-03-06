@@ -89,6 +89,7 @@
         <item>7</item>
         <item>8</item>
         <item>9</item>
+        <item>10</item>
     </string-array>
 
     <string-array name="pref_menu_names">
@@ -100,8 +101,9 @@
         <item>Failed Recordings</item>
         <item>Program Guide</item>
         <item>Status</item>
-        <item>Settings</item>
         <item>Connections</item>
+        <item>Settings</item>
+        <item>Help &amp; feedback</item>
     </string-array>
 
     <string-array name="pref_sort_channels_ids" translatable="false">

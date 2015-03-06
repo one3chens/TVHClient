@@ -14,8 +14,9 @@
         <item>Misslyckade Inspelningar</item>
         <item>Programguide</item>
         <item>Status</item>
-        <item>Inställningar</item>
         <item>Anslutningar</item>
+        <item>Inställningar</item>
+        <item>Hjälp &amp; feedback</item>
     </string-array>
 
     <string-array name="pref_sort_channels_names">
