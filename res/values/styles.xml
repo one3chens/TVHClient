@@ -34,23 +34,24 @@
     </style>
 
     <!-- Font for the menu texts in the navigation drawer -->
-    <style name="MenuFont.Light" parent="@android:style/TextAppearance.Small">
-        <item name="android:textColor">#333333</item>
-        <item name="android:textSize">20sp</item>
+    <!-- Font for the program/channel/recording title texts in the details screens -->
+    <style name="MenuTitleFont.Light" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#ae000000</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="MenuFont.Dark" parent="MenuFont.Light">
-        <item name="android:textColor">#FFFFFF</item>
+    <style name="MenuTitleFont.Dark" parent="MenuTitleFont.Light">
+        <item name="android:textColor">#aeffffff</item>
     </style>
 
-    <!-- Font for the menu header texts in the navigation drawer -->
-    <style name="MenuHeaderFont.Light" parent="@android:style/TextAppearance.Small">
-        <item name="android:textColor">#666666</item>
-        <item name="android:textSize">20sp</item>
+    <!-- Font for the subtitles in various screens -->
+    <style name="MenuSubtitleFont.Light" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#6c000000</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="MenuHeaderFont.Dark" parent="MenuHeaderFont.Light">
-        <item name="android:textColor">#AAAAAA</item>
+    <style name="MenuSubtitleFont.Dark" parent="MenuSubtitleFont.Light">
+        <item name="android:textColor">#6cffffff</item>
     </style>
 
     <!-- Font for the program title in the program guide screen -->
@@ -110,10 +111,10 @@
         <item name="ic_arrow_drop_down">@drawable/ic_arrow_drop_down_dark</item>
         <item name="item_active">@drawable/item_active_dark</item>
         <item name="item_not_active">@drawable/item_not_active_dark</item>
+        <item name="MenuTitleFont">@style/MenuTitleFont.Dark</item>
+        <item name="MenuSubtitleFont">@style/MenuSubtitleFont.Dark</item>
         <item name="TitleFont">@style/TitleFont.Dark</item>
         <item name="SubtitleFont">@style/SubtitleFont.Dark</item>
-        <item name="MenuFont">@style/MenuFont.Dark</item>
-        <item name="MenuHeaderFont">@style/MenuHeaderFont.Dark</item>
         <item name="HeaderFont">@style/HeaderFont.Dark</item>
         <item name="ProgramGuideTimelineFont">@style/ProgramGuideTimelineFont.Dark</item>
         <item name="ProgramGuideTitleFont">@style/ProgramGuideTitleFont.Dark</item>
@@ -147,10 +148,10 @@
         <item name="ic_arrow_drop_down">@drawable/ic_arrow_drop_down_light</item>
         <item name="item_active">@drawable/item_active_light</item>
         <item name="item_not_active">@drawable/item_not_active_light</item>
+        <item name="MenuTitleFont">@style/MenuTitleFont.Light</item>
+        <item name="MenuSubtitleFont">@style/MenuSubtitleFont.Light</item>
         <item name="TitleFont">@style/TitleFont.Light</item>
         <item name="SubtitleFont">@style/SubtitleFont.Light</item>
-        <item name="MenuFont">@style/MenuFont.Light</item>
-        <item name="MenuHeaderFont">@style/MenuHeaderFont.Light</item>
         <item name="HeaderFont">@style/HeaderFont.Light</item>
         <item name="ProgramGuideTimelineFont">@style/ProgramGuideTimelineFont.Light</item>
         <item name="ProgramGuideTitleFont">@style/ProgramGuideTitleFont.Light</item>
