@@ -59,6 +59,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -101,8 +102,9 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
     private static final int MENU_FAILED_RECORDINGS = 5;
     private static final int MENU_PROGRAM_GUIDE = 6;
     private static final int MENU_STATUS = 7;
-    private static final int MENU_SETTINGS = 8;
-    private static final int MENU_CONNECTIONS = 9;
+    private static final int MENU_CONNECTIONS = 8;
+    private static final int MENU_SETTINGS = 9;
+    private static final int MENU_INFO = 10;
 
     // Holds the stack of menu items
     public ArrayList<Integer> menuStack = new ArrayList<Integer>();
@@ -134,6 +136,8 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
     // Contains the information about the current connection state.
     private String connectionStatus = Constants.ACTION_CONNECTION_STATE_UNKNOWN;
 
+    private String[] menuItems;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setTheme(Utils.getThemeId(this));
@@ -156,6 +160,8 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         defaultMenuPosition = Integer.parseInt(prefs.getString("defaultMenuPositionPref", String.valueOf(MENU_STATUS)));
+
+        menuItems = getResources().getStringArray(R.array.pref_menu_names);
 
         // The drawer does not support setting the background automatically from
         // the defined theme. This needs to be done manually. Set the correct
@@ -353,8 +359,6 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         final boolean lightTheme = prefs.getBoolean("lightThemePref", true);
 
-        String[] menuItems = getResources().getStringArray(R.array.pref_menu_names);
-
         List<DrawerMenuItem> list = new ArrayList<DrawerMenuItem>();
         list.add(new DrawerMenuItem(MENU_CHANNELS, menuItems[0],
                 (lightTheme) ? R.drawable.ic_menu_channels_light : R.drawable.ic_menu_channels_dark));
@@ -379,12 +383,15 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
         list.add(new DrawerMenuItem(MENU_STATUS, menuItems[7],
                 (lightTheme) ? R.drawable.ic_menu_status_light
                         : R.drawable.ic_menu_status_dark));
-        list.add(new DrawerMenuItem(MENU_SETTINGS, menuItems[8],
-                (lightTheme) ? R.drawable.ic_menu_settings_light
-                        : R.drawable.ic_menu_settings_dark));
-        list.add(new DrawerMenuItem(MENU_CONNECTIONS, menuItems[9],
+        list.add(new DrawerMenuItem(MENU_CONNECTIONS, menuItems[8],
                 (lightTheme) ? R.drawable.ic_menu_connections_light
                         : R.drawable.ic_menu_connections_dark));
+        list.add(new DrawerMenuItem(MENU_SETTINGS, menuItems[9],
+                (lightTheme) ? R.drawable.ic_menu_settings_light
+                        : R.drawable.ic_menu_settings_dark));
+        list.add(new DrawerMenuItem(MENU_INFO, menuItems[10],
+                (lightTheme) ? R.drawable.ic_menu_status_light
+                        : R.drawable.ic_menu_status_dark));
 
         return list;
     }
@@ -513,11 +520,16 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
         }
         // No search is available in the these menus
         if (menuPosition == MENU_STATUS 
+                || menuPosition == MENU_INFO 
                 || menuPosition == MENU_COMPLETED_RECORDINGS 
                 || menuPosition == MENU_SCHEDULED_RECORDINGS
                 || menuPosition == MENU_FAILED_RECORDINGS
                 || menuPosition == MENU_SERIES_RECORDINGS ) {
             (menu.findItem(R.id.menu_search)).setVisible(false);
+        }
+        // No refresh is available in the these menus
+        if (menuPosition == MENU_INFO) {
+            (menu.findItem(R.id.menu_refresh)).setVisible(false);
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -678,6 +690,7 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
         drawerAdapter.notifyDataSetChanged();
 
         Bundle bundle = new Bundle();
+        bundle.putString(Constants.BUNDLE_TITLE, menuItems[position]);
 
         switch (position) {
         case MENU_CHANNELS:
@@ -722,6 +735,14 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
             showFragment(StatusFragment.class.getName(), R.id.main_fragment, bundle);
             break;
 
+        case MENU_CONNECTIONS:
+            // Show the connections
+            menuPosition = defaultMenuPosition;
+            Intent connIntent = new Intent(this, SettingsActivity.class);
+            connIntent.putExtra(Constants.BUNDLE_MANAGE_CONNECTIONS, true);
+            startActivityForResult(connIntent, Constants.RESULT_CODE_SETTINGS);
+            break;
+
         case MENU_SETTINGS:
             // Show the settings
             menuPosition = defaultMenuPosition;
@@ -729,12 +750,12 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
             startActivityForResult(settingsIntent, Constants.RESULT_CODE_SETTINGS);
             break;
 
-        case MENU_CONNECTIONS:
-            // Show the connections
+        case MENU_INFO:
+            //showFragment(InfoFragment.class.getName(), R.id.main_fragment, bundle);
             menuPosition = defaultMenuPosition;
-            Intent connIntent = new Intent(this, SettingsActivity.class);
-            connIntent.putExtra(Constants.BUNDLE_MANAGE_CONNECTIONS, true);
-            startActivityForResult(connIntent, Constants.RESULT_CODE_SETTINGS);
+            Intent infoIntent = new Intent(this, InfoFeedbackActivity.class);
+            infoIntent.putExtra(Constants.BUNDLE_TITLE, menuItems[position]);
+            startActivity(infoIntent);
             break;
         }
     }
@@ -775,6 +796,7 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
 
         case MENU_PROGRAM_GUIDE:
         case MENU_STATUS:
+        case MENU_INFO:
             mainLayoutWeight = 1;
             break;
 
