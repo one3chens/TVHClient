@@ -16,7 +16,7 @@
         <item>Etat</item>
         <item>Connexions</item>
         <item>Paramétres</item>
-        <item>Aide &amp; Commentaires</item>
+        <item>Information et de rétroaction</item>
     </string-array>
 
     <string-array name="pref_sort_channels_names">

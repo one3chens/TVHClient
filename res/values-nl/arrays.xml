@@ -16,7 +16,7 @@
         <item>Status</item>
         <item>Connecties</item>
         <item>Instellingen</item>
-        <item>Hulp &amp; feedback</item>
+        <item>Informatie en feedback</item>
     </string-array>
 
     <string-array name="pref_sort_channels_names">

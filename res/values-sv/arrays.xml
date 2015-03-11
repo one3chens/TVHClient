@@ -16,7 +16,7 @@
         <item>Status</item>
         <item>Anslutningar</item>
         <item>Inställningar</item>
-        <item>Hjälp &amp; feedback</item>
+        <item>Information och återkoppling</item>
     </string-array>
 
     <string-array name="pref_sort_channels_names">
