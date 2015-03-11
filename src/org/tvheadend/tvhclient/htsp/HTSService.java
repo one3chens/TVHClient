@@ -809,7 +809,7 @@ public class HTSService extends Service implements HTSConnectionListener {
                     TVHClientApplication app = (TVHClientApplication) getApplication();
                     app.updateChannel(ch);
                 } catch (Throwable ex) {
-                    Log.e(TAG, "Can't load channel icon", ex);
+                    //Log.e(TAG, "Can't load channel icon", ex);
                 }
             }
         });
@@ -823,7 +823,7 @@ public class HTSService extends Service implements HTSConnectionListener {
                     TVHClientApplication app = (TVHClientApplication) getApplication();
                     app.updateChannelTag(tag);
                 } catch (Throwable ex) {
-                    Log.e(TAG, "Can't load tag icon", ex);
+                    //Log.e(TAG, "Can't load tag icon", ex);
                 }
             }
         });
