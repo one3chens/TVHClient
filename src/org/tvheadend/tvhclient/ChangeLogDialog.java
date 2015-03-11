@@ -20,14 +20,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.tvheadend.tvhclient.R;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.webkit.WebView;
@@ -156,9 +153,9 @@ public class ChangeLogDialog {
         WebView wv = new WebView(this.context);
 
         if (Utils.getThemeId(context) == R.style.CustomTheme_Light) {
-            wv.setBackgroundColor(Color.WHITE);
+            wv.setBackgroundColor(context.getResources().getColor(R.color.window_background_color_light));
         } else {
-            wv.setBackgroundColor(Color.BLACK);
+            wv.setBackgroundColor(context.getResources().getColor(R.color.window_background_color_dark));
         }
         wv.loadDataWithBaseURL(null, this.getLog(full), "text/html", "UTF-8", null);
 
