@@ -13,5 +13,11 @@
         android:icon="?attr/ic_menu_refresh"
         android:orderInCategory="10"
         android:title="@string/menu_refresh"/>
+    <item
+        android:id="@+id/menu_changelog"
+        android:icon="?attr/ic_menu_changelog"
+        android:orderInCategory="11"
+        android:title="@string/pref_changelog"
+        app:showAsAction="ifRoom|withText"/>
 
 </menu>
