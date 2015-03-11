@@ -10,6 +10,7 @@ public class Constants {
     public static final int PREF_PROGRAMS_TO_LOAD = 15;
 
     // Strings used to identify the information passed via a bundle
+    public static final String BUNDLE_TITLE = "toolbarTitle";
     public static final String BUNDLE_SHOWS_ONLY_CHANNELS = "showOnlyChannels";
     public static final String BUNDLE_RECORDING_TYPE = "recordingType";
     public static final String BUNDLE_DUAL_PANE = "isDualPane";
