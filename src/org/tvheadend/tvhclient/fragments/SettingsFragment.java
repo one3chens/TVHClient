@@ -2,7 +2,6 @@ package org.tvheadend.tvhclient.fragments;
 
 import java.io.File;
 
-import org.tvheadend.tvhclient.ChangeLogDialog;
 import org.tvheadend.tvhclient.PreferenceFragment;
 import org.tvheadend.tvhclient.R;
 import org.tvheadend.tvhclient.SuggestionProvider;
@@ -50,19 +49,7 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
                 return false;
             }
         });
-        
-        // Add a listener to the connection preference so that the 
-        // ChangeLogDialog with all changes can be shown.
-        Preference prefChangelog = findPreference("pref_changelog");
-        prefChangelog.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                final ChangeLogDialog cld = new ChangeLogDialog(getActivity());
-                cld.getFullLogDialog().show();
-                return false;
-            }
-        });
-        
+
         // Add a listener to the clear search history preference so that it can be cleared.
         Preference prefClearSearchHistory = findPreference("pref_clear_search_history");
         prefClearSearchHistory.setOnPreferenceClickListener(new OnPreferenceClickListener() {
