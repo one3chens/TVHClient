@@ -11,6 +11,7 @@ import org.tvheadend.tvhclient.adapter.DrawerMenuAdapter;
 import org.tvheadend.tvhclient.fragments.ChannelListFragment;
 import org.tvheadend.tvhclient.fragments.CompletedRecordingListFragment;
 import org.tvheadend.tvhclient.fragments.FailedRecordingListFragment;
+import org.tvheadend.tvhclient.fragments.InfoFeedbackFragment;
 import org.tvheadend.tvhclient.fragments.ProgramDetailsFragment;
 import org.tvheadend.tvhclient.fragments.ProgramGuideListFragment;
 import org.tvheadend.tvhclient.fragments.ProgramGuidePagerFragment;
@@ -295,6 +296,9 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
                                         // Only if a new connection has been selected
                                         // switch the selection status and reconnect
                                         if (oldConn.id != newConn.id) {
+                                            // Close the menu when a new connection has been selected
+                                            drawerLayout.closeDrawers();
+                                            // Set the new connection as the active one
                                             newConn.selected = true;
                                             oldConn.selected = false;
                                             DatabaseHelper.getInstance().updateConnection(oldConn);
@@ -324,7 +328,7 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
             connectionStatus = savedInstanceState.getString(Constants.BUNDLE_CONNECTION_STATUS);
         }
 
-        // As a default show the menu
+        // As a default show the full menu
         showDrawerMenu(true);
     }
 
@@ -533,6 +537,9 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
         if (menuPosition == MENU_INFO) {
             (menu.findItem(R.id.menu_refresh)).setVisible(false);
         }
+        if (menuPosition != MENU_INFO) {
+            (menu.findItem(R.id.menu_changelog)).setVisible(false);
+        }
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -564,6 +571,10 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
 
             // Reconnect to the server and reload all data
             Utils.connect(this, true);
+            return true;
+
+        case R.id.menu_changelog:
+            changeLogDialog.getFullLogDialog().show();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -753,11 +764,8 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
             break;
 
         case MENU_INFO:
-            //showFragment(InfoFragment.class.getName(), R.id.main_fragment, bundle);
-            menuPosition = defaultMenuPosition;
-            Intent infoIntent = new Intent(this, InfoFeedbackActivity.class);
-            infoIntent.putExtra(Constants.BUNDLE_TITLE, menuItems[position]);
-            startActivity(infoIntent);
+            bundle.putString(Constants.BUNDLE_TITLE, menuItems[position]);
+            showFragment(InfoFeedbackFragment.class.getName(), R.id.main_fragment, bundle);
             break;
         }
     }
@@ -927,7 +935,6 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
                 public void run() {
                     showDrawerMenu(true);
                     connectionStatus = action;
-                    drawerAdapter.notifyDataSetChanged();
                 }
             });
         } else if (action.equals(Constants.ACTION_CONNECTION_STATE_SERVER_DOWN)
@@ -942,7 +949,6 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
                         showDrawerMenu(false);
                         connectionStatus = action;
                         channelLoadingList.clear();
-                        drawerAdapter.notifyDataSetChanged();
                         handleMenuSelection(MENU_STATUS);
                     }
                 });
@@ -968,6 +974,10 @@ public class MainActivity extends ActionBarActivity implements ChangeLogDialogIn
         TVHClientApplication app = (TVHClientApplication) getApplication();
         drawerAdapter.getItemById(MENU_TIMER_RECORDINGS).isVisible = (show && (app.getProtocolVersion() > 17) && false);
         drawerAdapter.getItemById(MENU_SERIES_RECORDINGS).isVisible = (show && (app.getProtocolVersion() > 12));
+
+        // Replace the adapter contents so the views get updated
+        drawerList.setAdapter(null);
+        drawerList.setAdapter(drawerAdapter);
     }
 
     @Override
